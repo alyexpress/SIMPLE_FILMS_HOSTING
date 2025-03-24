@@ -1,0 +1,352 @@
+:root {
+    --background-color: white;
+    --text-color: black;
+    --dim-color: gray;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: rgb(25, 28, 31);
+        --text-color: white;
+        --dim-color: #aaa;
+    }
+    .video-content > h1 > .tag {
+        background: white!important;
+        color: #222!important;
+    }
+}
+
+
+body {
+    background: var(--background-color);
+    color: var(--text-color);
+}
+
+#loader {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    background: white;
+    transition: .5s;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+
+#loader > img {
+    margin: auto;
+    width: 70px;
+    height: 70px;
+    animation-name: loading;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+#loader.loaded {
+    opacity: 0;
+}
+
+@keyframes loading {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+        display: none;
+    }
+}
+
+
+header .header-logo {
+    margin-right: 20px;
+}
+
+header .header-logo svg {
+    transition: .2s;
+}
+
+header .header-logo:hover svg {
+    color: #ffc107;
+}
+
+header .nav-link {
+    font-size: 20px;
+    margin: -5px 3px;
+}
+
+header .nav-link.text-white:hover {
+    color: #ffc107 !important;
+}
+
+.film-info {
+    align-items: flex-start;
+}
+
+.film-info::selection {
+    background: rgba(13, 202, 240, 0.5);
+    color: black;
+}
+
+.film-info > img {
+    width: 350px;
+    height: auto;
+    border-radius: 30px;
+    transition: .3s!important;
+    justify-content: center;
+}
+
+.film-info > img:hover {
+    transform: scale(0.97, 0.97);
+}
+
+.film-description {
+    padding: 1em 0 0 5em;
+    position: relative;
+}
+
+.film-info .title {
+    font-size: 5em;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.film-info .title > span {
+    color: var(--dim-color);
+    /*margin-left: 0.5rem;*/
+}
+
+.film-description > .tag {
+    background: #222;
+    display: inline-block;
+    padding: 2px 15px;
+    font-size: 25px;
+    font-weight: bold;
+    border-radius: 1em;
+    margin-top: 7px;
+    margin-bottom: 0.7rem;
+    margin-left: 2px;
+}
+
+.film-description > .tag.tag-yellow {
+    background: #ffc107;
+    color: black;
+}
+
+.film-description > .tag.tag-red {
+    background: #ff3549;
+    color: white;
+}
+
+.film-description > .tag.tag-purple {
+    background: #6610f2;
+    color: white;
+}
+
+.film-description > .row {
+    font-size: 25px
+}
+
+.film-description > .row > .col-sm-3 {
+    font-weight: bold;
+}
+
+.film-description > .film-about {
+    display: block;
+    margin-top: 1rem;
+    max-width: 800px;
+    font-size: 25px;
+    line-height: 1.2;
+    color: var(--dim-color);
+}
+
+.film-description button {
+    font-size: 2em;
+    font-weight: 500;
+    border-radius: 1rem;
+    width: 300px;
+    display: inline-block;
+    transition: .2s;
+}
+
+.film-description button:hover {
+    transform: scale(0.98, 0.98);
+}
+
+.video-content {
+    margin-top: 5em;
+    margin-bottom: 7em;
+}
+
+.video-content > h1 {
+    text-align: center;
+    font-size: 4em;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.video-content > h1 > .tag {
+    padding: 5px 20px;
+    background: #222;
+    color: white;
+    border-radius: 10px;
+}
+
+.video-content > video {
+    width: 100%;
+    border-radius: 50px;
+}
+
+
+.request {
+    font-size: calc(1.5rem + 1.5vw);
+    font-weight: 200;
+}
+.films-grid {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.films-grid > a {
+    display: inline-block;
+    width: 22%;
+    margin: 0 1.35% 30px 1.35%;
+    text-decoration: none;
+}
+
+.films-grid > a > img {
+    display: block;
+    width: 100%;
+    border-radius: 30px;
+    transition: .25s;
+}
+
+.films-grid > a:hover img,
+.films-grid > a:hover .glass-img {
+    transform: scale(0.95, 0.95);
+}
+
+.films-grid > a > .title {
+    display: -webkit-box;
+    color: var(--text-color);
+    font-size: 30px;
+    font-weight: bold;
+    overflow: hidden;
+    line-clamp: 2;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    line-height: 1.2;
+    margin-top: 6px;
+    margin-left: 6px;
+}
+
+.films-grid > a > .rating {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 2px 15px;
+    background: #ffc107;
+    color: black;
+    border-radius: 20px;
+    display: inline-block;
+    margin-left: 6px;
+}
+
+.films-grid > a > .year {
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--dim-color);
+}
+
+.glass-img {
+    position: relative;
+    background: #ddd;
+    width: 100%;
+    height: calc(300px + 7vw);
+    border-radius: 30px;
+    overflow: hidden;
+    transition: .25s;
+}
+
+.glass-img-fix {
+    width: 350px;
+    min-width: 350px;
+    height: 519px;
+}
+
+.glass-img::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    width: 135%;
+    height: 80px;
+    transform: rotate(-30deg);
+    top: -200px;
+    left: -45px;
+    background: white;
+    filter: blur(40px);
+    animation-name: load_img;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes load_img {
+    from {top: -200px}
+    to {top: 550px}
+}
+
+
+@media screen and (max-width: 1200px) {
+    .film-info {
+        display: block!important;
+        text-align: center;
+    }
+
+    .film-description {
+        padding: 1em 2em;
+    }
+
+    .film-description > .under-group {
+        display: block;
+        position: relative;
+        margin-top: 2rem;
+    }
+}
+
+@media screen and (max-width: 1199px) {
+    .films-grid > a {
+        width: 29%;
+        margin: 0 1.5% 30px 1.5%;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .films-grid > a {
+        width: 46%;
+        margin: 0 1.5% 30px 1.5%;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .film-description > .under-group > * {
+        width: 100%;
+    }
+
+    .film-description > .under-group > .btn-warning {
+        margin-top: 5px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .films-grid > a {
+        width: 94%;
+        margin: 0 3% 30px 3%;
+    }
+}
