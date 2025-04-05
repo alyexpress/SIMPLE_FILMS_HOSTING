@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex film-info">
+    <img src="{{ data['preview'] }}" alt="" class="d-none">
+    <div class="glass-img glass-img-fix"></div>
+    <div class="film-description">
+        <h1 class="title">{{ data['title'] }} <span>({{ data['Год'][0] }})</span></h1>
+        <span class="tag tag-yellow">{{ data['rating'] }}
+            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+            </svg></span>
+        <span class="tag tag-red">18+</span>
+        <span class="tag tag-purple">Новый<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-fire ms-1" viewBox="0 0 16 16">
+            <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15"></path>
+        </svg></span>
+        <div class="row">
+            <div class="col-sm-3">Жанр</div>
+            <div class="col-sm-7">{{ ', '.join(data['Жанр'][:3]) }}</div>
+        </div><div class="row">
+            <div class="col-sm-3">Страна</div>
+            <div class="col-sm-7">{{ ', '.join(data['Страна'][:3]) }}</div>
+        </div><div class="row">
+            <div class="col-sm-3">Режиссер</div>
+            <div class="col-sm-7">{{ ', '.join(data['Режиссер'][:2]) }}</div>
+        </div><div class="row">
+            <div class="col-sm-3">Актеры</div>
+            <div class="col-sm-7">{{ ', '.join(data['Актеры'][:2]) }}...</div>
+        </div>
+        <span class="film-about">{{ data['description'] }}</span>
+        <div class="d-inline-block under-group mt-3">
+            <button class="btn btn-primary btn-lg me-2" onclick="watch()">Смотреть</button>
+            <button class="btn btn-warning btn-lg">В Избранное</button>
+        </div>
+    </div>
+</div>
+<div class="full-under-group">
+    <span class="film-about">{{ data['description'] }}</span>
+    <div class="d-inline-block under-group mt-3">
+        <button class="btn btn-primary btn-lg me-2" onclick="watch()">Смотреть</button>
+        <button class="btn btn-warning btn-lg">В Избранное</button>
+    </div>
+</div>
+<div class="video-content">
+    <h1>Видео сервера: <span class="tag">Kinovod</span></h1>
+    <div><video src="" class="loading" controls>
+        К сожалению, ваше устройство не поддерживает формат видео
+    </video></div>
+</div>
+<div class="serials-control">
+    <select class="form-select form-select-lg mb-3" id="seasons">
+        <option value="1" selected>1 Сезон</option>
+        <option value="2">2 Сезон</option>
+        <option value="3">3 Сезон</option>
+    </select>
+    <select class="form-select form-select-lg mb-3" id="episodes">
+        <option value="1" selected>1 Серия</option>
+        <option value="2">2 Серия</option>
+        <option value="3">3 Серия</option>
+    </select>
+    <a href="" class="btn btn-lg btn-primary">Следующая серия
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-fast-forward-fill" viewBox="0 0 16 16">
+            <path d="M7.596 7.304a.802.802 0 0 1 0 1.392l-6.363 3.692C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696z"></path>
+            <path d="M15.596 7.304a.802.802 0 0 1 0 1.392l-6.363 3.692C8.713 12.69 8 12.345 8 11.692V4.308c0-.653.713-.998 1.233-.696z"></path>
+        </svg>
+    </a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let [s, e] = [1, 1]
+    async function setVideo(s, e) {
+        document.getElementsByTagName('video')[0].classList.add("loading")
+        let url = window.location.href + "/api/"
+        url += "s" + s.toString() + "e" + e.toString()
+        let data = await(await fetch(url)).json()
+        document.getElementsByTagName('video')[0].src = data['src']
+        document.getElementsByTagName("video")[0].classList.remove("loading")
+        return [data["seasons"], data["episodes"]]
+    }
+    function load_seasons(seasons) {
+        let options = ""
+        for (let i = 1; i < seasons + 1; i++) {
+            options += '<option value="' + i + '"'
+            if (i === s) options += ' selected'
+            options += '>' + i + ' Сезон</option>\n'
+        }
+        document.getElementById("seasons").innerHTML = options
+    }
+    function load_episodes(episodes) {
+        let options = ""
+        for (let i = 1; i < episodes + 1; i++) {
+            options += '<option value="' + i + '"'
+            if (i === s) options += ' selected'
+            options += '>' + i + ' Серия</option>\n'
+        }
+        document.getElementById("episodes").innerHTML = options
+    }
+    window.onload = async function () {
+        document.getElementsByClassName("glass-img")[0].remove()
+        document.getElementsByClassName("d-none")[0].classList.remove("d-none")
+        let serials = await setVideo(s, e)
+        load_seasons(serials[0]); load_episodes(serials[1])
+    }
+    function watch() {
+        const videoContent =  document.getElementsByClassName("video-content")[0]
+        videoContent.getElementsByTagName("h1")[0].scrollIntoView();
+        document.getElementsByTagName('video')[0].play()
+    }
+    document.getElementById("episodes").onchange = async function () {
+        document.getElementsByTagName('video')[0].src = null
+        e = document.getElementById("episodes").value
+        await setVideo(s, e)
+    }
+    document.getElementById("seasons").onchange = async function () {
+        document.getElementsByTagName('video')[0].src = null
+        s = document.getElementById("seasons").value; e = 1
+        load_episodes((await setVideo(s, e))[1])
+    }
+</script>
+{% endblock %}

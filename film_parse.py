@@ -53,6 +53,28 @@ class FilmParse:
         video = soup.find('video')['src']
         return video
 
+    @staticmethod
+    def get_kinovod_serials(url, s=1, e=5):
+        driver = webdriver.Chrome()
+        driver.get(url)
+        driver.add_cookie({'name': 'player_settings', 'value': 'old|mp4|1'})
+        js = "window.localStorage.setItem('pljsquality', '1080p');"
+        driver.execute_script(js)
+        driver.refresh()
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, 'video')))
+        xpath = "uppod_player_div.uppod-playlist > uppod_player_div > *"
+        js = f"""let s = document.querySelectorAll('{xpath}');
+        s[{s - 1}].click(); let e = document.querySelectorAll('{xpath}');
+        e[{e}].click(); return [s.length, e.length - 1]"""
+        seasons, episodes = driver.execute_script(js)
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, 'video')))
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        driver.quit()
+        video = soup.find('video').find('source')['src']
+        return video, seasons, episodes
+
 
     def get_info_kinovod(self, url):
         req = requests.get(url=url, headers=self.HEADERS)
@@ -63,7 +85,8 @@ class FilmParse:
         rating = soup.select_one("span.rating_site").parent.get_text()
         data = {'preview': self.KINOVOD_SERVER + preview, 'title': title,
             'rating': float(rating), 'description': description.get_text()}
-        # print(len(soup.select('.info_items > .info_item')))
+        meta = soup.find('meta', property="og:url").get("content")
+        serial = meta.split("/")[-2] == "serial"
         for item in soup.select('.info_items > .info_item'):
             key = item.select_one('.key').get_text()
             value = item.select_one('.value')
@@ -74,7 +97,7 @@ class FilmParse:
                 data[key] = value.get_text()
         del data['']
 
-        return data
+        return data, serial
         # genres = soup.select("span[itemprop=genre]")[:3]
         # genres = list(map(lambda x: x.get_text(), genres))
         # producer = soup.select_one("span[itemprop=name]").get_text()
@@ -116,6 +139,50 @@ class FilmParse:
         video = soup.find('video')['src']
         return video
 
+    def get_info_zona(self, url):
+        req = requests.get(url=url, headers=self.HEADERS)
+        soup = BeautifulSoup(req.text, 'html.parser')
+        title = soup.select_one('span.js-title').get_text()
+        adult = False
+        if title.endswith('18+'):
+            title, adult = title[:-4], True
+        rating = soup.select_one('span.entity-rating-mobi').get_text()
+        preview = soup.select_one('.entity-desc-poster > meta').get('content')
+        description = soup.select_one('.entity-desc-description').get_text()
+        data = {'title': title, 'adult': adult, 'rating': rating,
+                'preview': preview, 'description': description}
+        xpath = '.entity-desc-table > dl.entity-desc-item-wrap'
+        for item in soup.select(xpath):
+            key = item.select_one('.entity-desc-item').get_text()
+            value = item.select_one('.entity-desc-value')
+            if value.select('*'):
+                if value.select('a > span'):
+                    spans = value.select('a > span')
+                elif value.select('span > span'):
+                    spans = value.select('span > span')
+                else:
+                    spans = value.select('*')
+                info = map(lambda x: x.get_text().strip('\n'), spans)
+                data[key] = list(info)
+            else:
+                data[key] = value.get_text()
+        return data
+
+
+    def get_zona_serials(self, url, s=1, e=1):
+        driver = webdriver.Chrome()
+        driver.get(url + f"/season-{s}")
+        js = 'document.getElementsByClassName("entity-episode-link")'
+        driver.execute_script(js + f"[{e - 1}].click()")
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, 'video')))
+        sleep(1)
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        driver.quit()
+        video = soup.find('video')['src']
+        return video
+
+
     def search_zona(self, query):
         url = f"{self.ZONA_SERVER}/search/{query}"
         req = requests.get(url=url, headers=self.HEADERS)
@@ -145,26 +212,17 @@ class FilmParse:
                 return self.get_zona(url)
 
 
-def get_zona_serials(url, s=1, e=1):
-    driver = webdriver.Chrome()
-    driver.get(url + f"/season-{s}")
-    js = 'document.getElementsByClassName("entity-episode-link")'
-    driver.execute_script(js + f"[{e - 1}].click()")
-    WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.TAG_NAME, 'video')))
-    sleep(1)
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    driver.quit()
-    video = soup.find('video')['src']
-    return video
-
-
-
 if __name__ == '__main__':
     fp = FilmParse()
+    episode = fp.get_kinovod_serials("https://kinovod.pro/serial/231675-vo-vse-tyazhkie")
+    print(episode)
     # film = fp.search_zona("Во все тяжкие")[0]['link']
     # url = get_zona_serials(film, s=1, e=3)
     # print(url)
-    film = fp.search_kinovod("Поймай меня если сможешь")[0]['link']
-    # print(film)
-    pprint(fp.get_info_kinovod("https://kinovod.pro/film/235254-obezyana"))
+    # film = fp.search_kinovod("Поймай меня если сможешь")[0]['link']
+    # # print(film)
+    # pprint(fp.get_info_kinovod("https://kinovod.pro/film/235254-obezyana"))
+    # url = "https://w140.zona.plus/tvseries/razdelenie-2022"
+    # pprint(fp.get_zona(url))
+    # url = "https://kinovod.pro/film/234866-belosnezhka"
+    # pprint(fp.get_kinovod(url))

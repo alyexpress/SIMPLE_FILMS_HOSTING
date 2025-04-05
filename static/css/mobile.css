@@ -1,0 +1,326 @@
+.full-under-group {
+    display: none;
+}
+
+@media screen and (max-width: 1399px) {
+    .glass-img {
+        height: 360px;
+    }
+
+    .film-info > .glass-img {
+        height: 519px;
+    }
+
+    .film-info .title {
+        font-size: 4em!important;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .film-info > img {
+        width: 300px;
+    }
+
+    .film-info > .film-description {
+        padding-left: 3em;
+    }
+
+    .film-description .tag {
+        font-size: 20px!important;
+    }
+
+    .film-description .tag > svg {
+        width: 20px!important;
+        margin-bottom: -2px;
+    }
+
+    .film-info .film-about,
+    .film-info .row {
+        font-size: 20px;
+    }
+
+    .film-info .title {
+        font-size: 3em!important;
+    }
+
+    .film-description > .under-group > * {
+        font-size: 25px!important;
+        width: 250px;
+    }
+
+    .video-content > h1 {
+        font-size: 48px;
+    }
+
+    .video-content video,
+    .video-content div {
+        border-radius: 45px!important;
+    }
+
+    :root {
+        --loader-size: 120px!important;
+    }
+
+    form[role=search] {
+        width: 200px;
+    }
+
+    .glass-img {
+        height: 400px;
+    }
+
+    .film-info > .glass-img {
+        min-width: 300px!important;
+        height: 444px;
+    }
+}
+
+@media screen and (max-width: 1199px) {
+    .films-grid > a {
+        width: 29%;
+        margin: 0 1.5% 30px 1.5%;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .film-info > img {
+        width: 250px;
+        border-radius: 20px;
+    }
+
+    .film-description .film-about,
+    .film-description .under-group > button {
+        display: none;
+    }
+
+    .film-description {
+        margin-bottom: -30px;
+        position: relative;
+        width: 100%;
+    }
+
+    .film-description .row .col-sm-3 {
+        min-width: 120px;
+    }
+
+    .full-under-group {
+        display: block;
+    }
+
+    .full-under-group .film-about {
+        font-size: 20px!important;
+    }
+
+    .full-under-group .under-group {
+        display: block!important;
+        text-align: center;
+    }
+
+    .full-under-group button {
+        font-size: 25px;
+        width: 250px;
+    }
+
+    .video-content video,
+    .video-content div {
+        border-radius: 40px!important;
+    }
+
+    :root {
+        --loader-size: 100px!important;
+    }
+
+    form[role=search] {
+        display: inline-block;
+        margin: 5px 1rem 5px 0!important;
+    }
+
+    .serials-control {
+        /*flex-direction: column;*/
+        flex-wrap: wrap;
+    }
+
+    .serials-control > select {
+        width: calc(50% - 20px);
+    }
+
+    .serials-control {
+        margin-left: calc(2.5% + 10px)!important;
+    }
+
+    .serials-control > .btn {
+        width: calc(100% - 20px);
+        margin-left: 0;
+    }
+
+    .header-logo {
+        margin-right: 0!important;
+    }
+
+    .header-logo:after {
+        content: "SimpleFilms";
+        font-size: 25px;
+        font-weight: 500;
+        margin-left: 10px;
+        transition: .2s;
+    }
+
+    .header-logo:hover:after {
+        color: #ffc107;
+    }
+
+    .glass-img {
+        height: 300px;
+    }
+
+    .film-info > .glass-img {
+        max-width: 250px!important;
+        min-width: 250px!important;
+        height: 370px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .film-info {
+        display: block!important;
+        text-align: center;
+    }
+
+    .film-description {
+        padding: 1em 5px!important;
+    }
+
+    .film-description .title {
+        font-size: 35px!important;
+    }
+
+    .film-description > .under-group {
+        display: block;
+        position: relative;
+        margin-top: 2rem;
+    }
+
+    .video-content > h1 {
+        font-size: 40px;
+    }
+
+    .video-content video,
+    .video-content div {
+        border-radius: 30px!important;
+    }
+
+    :root {
+        --loader-size: 80px!important;
+    }
+
+    .serials-control > .btn {
+        font-size: 25px!important;
+    }
+
+    .serials-control > .btn > svg {
+        height: 25px!important;
+    }
+
+    .films-grid > a {
+        width: 46%;
+        margin: 0 1.5% 30px 1.5%;
+    }
+
+    .film-description > .under-group > * {
+        width: 100%;
+    }
+
+    .film-description > .under-group > .btn-warning {
+        margin-top: 5px;
+    }
+
+    .btn-more > a {
+        font-size: 2em;
+    }
+
+    .glass-img {
+        height: 350px;
+    }
+
+    .film-info > .glass-img {
+        display: inline-block;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    .film-description .row > * {
+        text-align: left;
+        width: 100%;
+    }
+
+    .full-under-group .film-about {
+        padding: 0 5px;
+    }
+
+    .full-under-group .under-group > button {
+        width: 94%;
+        max-width: 350px;
+    }
+
+    .full-under-group .under-group > .btn-primary {
+        margin-bottom: 7px;
+    }
+
+    .serials-control > select {
+        font-size: 20px;
+    }
+
+    .films-grid > a > .title {
+        font-size: 20px!important;
+        margin-bottom: 3px;
+    }
+
+    .films-grid > a > .rating {
+        font-size: 15px!important;
+        padding: 2px 10px;
+    }
+
+    .films-grid > a > .rating > svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .films-grid > a > .year {
+        font-size: 20px!important;
+        margin-left: 2px;
+    }
+
+    .btn-more > a {
+        font-size: 1.5em;
+    }
+
+    .glass-img {
+        height: 65vw;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    .serials-control > .btn {
+        font-size: 22px!important;
+        padding: 8px 0!important;
+    }
+
+    .serials-control > .btn > svg {
+        height: 22px!important;
+        margin-bottom: -2px;
+    }
+
+    .video-content video,
+    .video-content div {
+        border-radius: 20px!important;
+    }
+
+    form[role=search] {
+        width: 220px;
+        margin: 5px 0 10px 0!important;
+    }
+
+    header ul {
+        width: 300px!important;
+    }
+}
